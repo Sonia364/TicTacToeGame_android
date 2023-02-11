@@ -2,8 +2,14 @@ package com.sonia.tictactoegame;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,6 +33,16 @@ public class MainActivity extends AppCompatActivity {
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        // set color blink animation to background
+        View mainContainer = findViewById(R.id.mainContainer);
+        ObjectAnimator animator = ObjectAnimator.ofInt(mainContainer, "backgroundColor", Color.RED, Color.GREEN, Color.YELLOW);
+        animator.setDuration(1000);
+        animator.setEvaluator(new ArgbEvaluator());
+        animator.setRepeatMode(ValueAnimator.REVERSE);
+        animator.setRepeatCount(ValueAnimator.INFINITE);
+        animator.start();
+
     }
 
 
@@ -57,6 +73,11 @@ public class MainActivity extends AppCompatActivity {
             // this will give a motion
             // effect to the image
             img.setTranslationY(-1000f);
+
+            // rotate the x and o
+            Animation animation = AnimationUtils.loadAnimation(this, R.anim.rotate);
+            img.startAnimation(animation);
+
 
             // change the active player
             // from 0 to 1 or 1 to 0
